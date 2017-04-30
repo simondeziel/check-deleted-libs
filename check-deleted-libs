@@ -67,7 +67,7 @@ fi
 
 # Check if we can use a fast path (/proc/$pid/comm available and no prelink)
 if [ -e "/proc/1/comm" ] && [ ! -x "$(/usr/bin/which prelink 2>/dev/null)" ]; then # fast path
-  sort -u $(grep -m1 -lE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | sed 's/maps$/comm/')
+  true | sort -u $(grep -m1 -lE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | sed 's/maps$/comm/')
 else # slow path
   grep -HE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | grep -vF ".#prelink#." | cut -d/ -f3 | sort -u | while IFS= read -r pid; do
     sed -n "/^Name:[[:space:]]\+/ s/^Name:[[:space:]]\+//p;q" "/proc/$pid/status" 2>/dev/null
