@@ -50,15 +50,14 @@ EOF
 cat "/proc/1/maps" >/dev/null 2>&1 || p_error "Unable to read /proc/1/maps, are you running $SCRIPT_NAME with root privileges?"
 
 GREP_RE='[[:space:]]((/.+)?/(lib|s?bin/)[^/]+ \(deleted\)|\(deleted\)(/.+)?/(lib|s?bin/)[^/]+)$'
-SED_RE='s#^/proc/\([0-9]\+\)/maps:.*#\1#'
 
 # Check if we can use a fast path (/proc/$pid/comm available and no prelink)
 if [ -e "/proc/1/comm" ] && [ ! -x "$(/usr/bin/which prelink 2>/dev/null)" ]; then # fast path
-  grep -m1 -HE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | sed "$SED_RE" | while IFS= read -r pid; do
+  grep -m1 -HE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | cut -d/ -f3 | while IFS= read -r pid; do
     cat "/proc/$pid/comm" 2>/dev/null
   done | sort -u
 else # slow path
-  grep -HE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | sed "/\.#prelink#\./d; $SED_RE" | while IFS= read -r pid; do
+  grep -HE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | grep -vF ".#prelink#." | cut -d/ -f3 | while IFS= read -r pid; do
     sed -n "/^Name:[[:space:]]\+/ s/^Name:[[:space:]]\+//p;q" "/proc/$pid/status" 2>/dev/null
   done | sort -u
 fi
