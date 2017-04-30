@@ -24,7 +24,7 @@ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 export ENV=
 export CDPATH=
 
-SCRIPT_NAME="$(basename $0)"
+SCRIPT_NAME="$(basename "$0")"
 
 p_error () {
   echo "Error: $1" >&2
@@ -47,18 +47,18 @@ EOF
 [ "$#" -ne 0 ] && usage
 
 # Check if /proc/*/maps are readable by testing with PID=1
-cat /proc/1/maps >/dev/null 2>&1 || p_error "Unable to read /proc/1/maps, are you running $SCRIPT_NAME with root privileges?"
+cat "/proc/1/maps" >/dev/null 2>&1 || p_error "Unable to read /proc/1/maps, are you running $SCRIPT_NAME with root privileges?"
 
 GREP_RE='[[:space:]]((/.+)?/(lib|s?bin/)[^/]+ \(deleted\)|\(deleted\)(/.+)?/(lib|s?bin/)[^/]+)$'
 SED_RE='s#^/proc/\([0-9]\+\)/maps:.*#\1#'
 
 # Check if we can use a fast path (/proc/$pid/comm available and no prelink)
-if [ -e "/proc/1/comm" -a ! -x "$(/usr/bin/which prelink 2>/dev/null)" ]; then # fast path
-  for pid in $(grep -m1 -HE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | sed "$SED_RE"); do
-    cat /proc/$pid/comm 2>/dev/null
+if [ -e "/proc/1/comm" ] && [ ! -x "$(/usr/bin/which prelink 2>/dev/null)" ]; then # fast path
+  grep -m1 -HE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | sed "$SED_RE" | while IFS= read -r pid; do
+    cat "/proc/$pid/comm" 2>/dev/null
   done | sort -u
 else # slow path
-  for pid in $(grep -HE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | sed "/\.#prelink#\./d; $SED_RE"); do
-    sed -n "/^Name:[[:space:]]\+/ s/^Name:[[:space:]]\+//p;q" /proc/$pid/status 2>/dev/null
+  grep -HE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | sed "/\.#prelink#\./d; $SED_RE" | while IFS= read -r pid; do
+    sed -n "/^Name:[[:space:]]\+/ s/^Name:[[:space:]]\+//p;q" "/proc/$pid/status" 2>/dev/null
   done | sort -u
 fi
