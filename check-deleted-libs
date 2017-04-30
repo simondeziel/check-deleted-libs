@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Report the names of the processes using deleted libraries or binaries.
+# Report the names of the processes (or QEMU VMs) using deleted libraries or binaries.
 # Copyright (C) 2014-2017 Simon Deziel <simon@sdeziel.info>
 
 # This program is free software; you can redistribute it and/or modify
@@ -23,6 +23,7 @@
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 export ENV=
 export CDPATH=
+export LC_ALL="C"
 
 SCRIPT_NAME="$(basename "$0")"
 
@@ -35,21 +36,34 @@ usage () {
   cat << EOF
 Copyright (C) 2014-2017 Simon Deziel
 
-Report the names of the processes using deleted libraries or binaries.
+Report the names of the processes (or QEMU VMs) using deleted libraries or binaries.
 
 Usage:
-  $SCRIPT_NAME
+  $SCRIPT_NAME [--qemu-names]
 EOF
   exit 0
 }
 
 # Check arguments
-[ "$#" -ne 0 ] && usage
+QEMU_NAMES=0
+[ "$#" -gt 1 ] && usage
+if [ "$#" -eq 1 ]; then
+  [ "$1" != "--qemu-names" ] && usage
+  QEMU_NAMES=1
+fi
 
 # Check if /proc/*/maps are readable by testing with PID=1
 cat "/proc/1/maps" >/dev/null 2>&1 || p_error "Unable to read /proc/1/maps, are you running $SCRIPT_NAME with root privileges?"
 
 GREP_RE='[[:space:]]((/.+)?/(lib|s?bin/)[^/]+ \(deleted\)|\(deleted\)(/.+)?/(lib|s?bin/)[^/]+)$'
+
+# report names of VM running outdated QEMU
+if [ "$QEMU_NAMES" -eq 1 ]; then
+  pgrep -a ^qemu-system-.+ | sed 's/^\([0-9]\+\).\+ -name \([^ ]\+\).*/\1 \2/' | while read -r pid vmname; do
+    grep -q -m1 -E "$GREP_RE" "/proc/$pid/maps" 2>/dev/null && echo "$vmname"
+  done
+  exit
+fi
 
 # Check if we can use a fast path (/proc/$pid/comm available and no prelink)
 if [ -e "/proc/1/comm" ] && [ ! -x "$(/usr/bin/which prelink 2>/dev/null)" ]; then # fast path
