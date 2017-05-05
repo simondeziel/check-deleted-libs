@@ -53,23 +53,25 @@ if [ "$#" -eq 1 ]; then
 fi
 
 # Check if /proc/*/maps are readable by testing with PID=1
-cat "/proc/1/maps" >/dev/null 2>&1 || p_error "Unable to read /proc/1/maps, are you running $SCRIPT_NAME with root privileges?"
+cd "/proc"
+cat "1/maps" >/dev/null 2>&1 || p_error "Unable to read /proc/1/maps, are you running $SCRIPT_NAME with root privileges?"
 
 GREP_RE='[[:space:]]((/.+)?/(lib|s?bin/)[^/]+ \(deleted\)|\(deleted\)(/.+)?/(lib|s?bin/)[^/]+)$'
 
 # report names of VM running outdated QEMU
 if [ "$QEMU_NAMES" -eq 1 ]; then
   pgrep -a ^qemu-system-.+ | sed 's/^\([0-9]\+\).\+ -name \([^ ]\+\).*/\1 \2/' | while read -r pid vmname; do
-    grep -q -m1 -E "$GREP_RE" "/proc/$pid/maps" 2>/dev/null && echo "$vmname"
+    grep -q -m1 -E "$GREP_RE" "$pid/maps" 2>/dev/null && echo "$vmname"
   done
   exit
 fi
 
 # Check if we can use a fast path (/proc/$pid/comm available and no prelink)
-if [ -e "/proc/1/comm" ] && [ ! -x "$(/usr/bin/which prelink 2>/dev/null)" ]; then # fast path
-  true | sort -u $(grep -m1 -lE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | sed 's/maps$/comm/')
+if [ -e "1/comm" ] && [ ! -x "$(/usr/bin/which prelink 2>/dev/null)" ]; then # fast path
+  # shellcheck disable=SC2046
+  true | sort -u $(grep -m1 -lE "$GREP_RE" [0-9]*/maps 2>/dev/null | sed 's/maps$/comm/')
 else # slow path
-  grep -HE "$GREP_RE" /proc/[0-9]*/maps 2>/dev/null | grep -vF ".#prelink#." | cut -d/ -f3 | sort -u | while IFS= read -r pid; do
-    sed -n "/^Name:[[:space:]]\+/ s/^Name:[[:space:]]\+//p;q" "/proc/$pid/status" 2>/dev/null
+  grep -HE "$GREP_RE" [0-9]*/maps 2>/dev/null | grep -vF ".#prelink#." | cut -d/ -f1 | sort -u | while IFS= read -r pid; do
+    sed -n "/^Name:[[:space:]]\+/ s/^Name:[[:space:]]\+//p;q" "$pid/status" 2>/dev/null
   done | sort -u
 fi
