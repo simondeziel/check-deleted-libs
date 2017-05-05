@@ -55,6 +55,7 @@ fi
 # Check if /proc/*/maps are readable by testing with PID=1
 cd "/proc"
 cat "1/maps" >/dev/null 2>&1 || p_error "Unable to read /proc/1/maps, are you running $SCRIPT_NAME with root privileges?"
+[ -x /usr/bin/which prelink 2>/dev/null ] && p_error "prelink is not supported"
 
 GREP_RE='/\(lib\|s\?bin/\)[^/]\+ (deleted)$'
 
@@ -67,11 +68,11 @@ if [ "$QEMU_NAMES" -eq 1 ]; then
 fi
 
 # Check if we can use a fast path (/proc/$pid/comm available and no prelink)
-if [ -e "1/comm" ] && [ ! -x "$(/usr/bin/which prelink 2>/dev/null)" ]; then # fast path
+if [ -e "1/comm" ]; then # fast path
   # shellcheck disable=SC2046
   true | sort -u $(grep -m1 -l "$GREP_RE" [0-9]*/maps 2>/dev/null | sed 's/maps$/comm/')
 else # slow path
-  grep -H "$GREP_RE" [0-9]*/maps 2>/dev/null | grep -vF ".#prelink#." | cut -d/ -f1 | sort -u | while IFS= read -r pid; do
+  grep -H "$GREP_RE" [0-9]*/maps 2>/dev/null | cut -d/ -f1 | sort -u | while IFS= read -r pid; do
     sed -n "/^Name:[[:space:]]\+/ s/^Name:[[:space:]]\+//p;q" "$pid/status" 2>/dev/null
   done | sort -u
 fi
