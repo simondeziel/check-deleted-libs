@@ -1,0 +1,17 @@
+check-deleted-libs (0.3) UNRELEASED; urgency=medium
+
+  * Short description (git rev FIXME)
+
+ -- Simon Deziel <simon.deziel@gmail.com>  Thu, 04 May 2017 21:19:59 -0400
+
+check-deleted-libs (0.2) trusty; urgency=medium
+
+  * Initial release (git rev d5d362bd2909).
+
+ -- Simon Deziel <simon@sdeziel.info>  Sun, 30 Apr 2017 22:07:18 +0000
+
+check-deleted-libs (0.1~git20170429.6367938108-1) trusty; urgency=medium
+
+  * Initial release.
+
+ -- Simon Deziel <simon@sdeziel.info>  Sun, 30 Apr 2017 00:46:03 +0000

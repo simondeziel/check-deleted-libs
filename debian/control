@@ -1,0 +1,18 @@
+Source: check-deleted-libs
+Section: misc
+Priority: optional
+Maintainer: Simon Deziel <simon@sdeziel.info>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.4
+Homepage: https://github.com/simondeziel/check-deleted-libs
+Vcs-Git: https://github.com/simondeziel/check-deleted-libs.git
+
+Package: check-deleted-libs
+Architecture: all
+Depends: ${misc:Depends}
+Description: Check processes using deleted libs/binaries
+ Report processes using deleted libraries or binaries. This
+ can be useful to identify which services/binaries should be
+ restarted after a security patch for example.
+ .
+ Also supports reporting the name of VMs running outdated QEMU.
