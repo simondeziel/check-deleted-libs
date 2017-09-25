@@ -3,7 +3,7 @@ Section: misc
 Priority: optional
 Maintainer: Simon Deziel <simon@sdeziel.info>
 Build-Depends: debhelper (>= 9)
-Standards-Version: 3.9.4
+Standards-Version: 3.9.5
 Homepage: https://github.com/simondeziel/check-deleted-libs
 Vcs-Git: https://github.com/simondeziel/check-deleted-libs.git
 
