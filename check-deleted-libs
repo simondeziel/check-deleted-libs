@@ -63,7 +63,7 @@ GREP_RE='/\(lib\|s\?bin/\)[^/]\+ (deleted)$'
 # report names of VM running outdated QEMU
 if [ "$QEMU_NAMES" -eq 1 ]; then
   pgrep -a ^qemu-system-.+ | sed 's/^\([0-9]\+\).\+ -name \([^ ]\+\).*/\1 \2/' | while read -r pid vmname; do
-    grep -q -m1 "$GREP_RE" "$pid/maps" 2>/dev/null && echo "$vmname"
+    grep -q -m1 "$GREP_RE" "$pid/maps" 2>/dev/null && echo "$vmname" || true
   done
 else
   # shellcheck disable=SC2046
