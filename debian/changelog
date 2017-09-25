@@ -1,3 +1,11 @@
+check-deleted-libs (0.4) trusty; urgency=medium
+
+  * New version (git rev 9f232e93eddc)
+    - Fix the return code to be 0 even when some VMs uses deleted
+      libs but not the last one
+
+ -- Simon Deziel <simon@sdeziel.info>  Mon, 25 Sep 2017 12:40:50 -0400
+
 check-deleted-libs (0.3) trusty; urgency=medium
 
   * New version (git rev 593682405fde)
