@@ -1,8 +1,10 @@
-check-deleted-libs (0.3) UNRELEASED; urgency=medium
+check-deleted-libs (0.3) trusty; urgency=medium
 
-  * Short description (git rev FIXME)
+  * New version (git rev 593682405fde)
+    - Drop support for kernel older than 2.6.33 (RHEL 6.6+ still OK)
+    - Drop support for prelink
 
- -- Simon Deziel <simon.deziel@gmail.com>  Thu, 04 May 2017 21:19:59 -0400
+ -- Simon Deziel <simon@sdeziel.info>  Thu, 04 May 2017 21:19:59 -0400
 
 check-deleted-libs (0.2) trusty; urgency=medium
 
