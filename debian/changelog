@@ -1,3 +1,10 @@
+check-deleted-libs (0.5) trusty; urgency=medium
+
+  * New version
+    - Fix qemu VM name reporting on newer libvirt
+
+ -- Simon Deziel <simon@sdeziel.info>  Wed, 02 Jan 2019 17:36:02 -0500
+
 check-deleted-libs (0.4) trusty; urgency=medium
 
   * New version
