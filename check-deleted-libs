@@ -56,7 +56,6 @@ fi
 cd "/proc"
 cat "1/maps" >/dev/null 2>&1 || p_error "Unable to read /proc/1/maps, are you running $SCRIPT_NAME with root privileges?"
 [ -e "1/comm" ] || p_error "Please upgrade to 2.6.33+ to have /proc/[pid]/comm available. RHEL backported this to recent 2.6.32"
-[ -x /usr/bin/which prelink 2>/dev/null ] && p_error "prelink is not supported"
 
 GREP_RE='/\(lib\|s\?bin/\)[^/]\+ (deleted)$'
 
