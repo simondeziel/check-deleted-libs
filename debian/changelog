@@ -1,3 +1,9 @@
+check-deleted-libs (0.6) UNRELEASED; urgency=medium
+
+  * Drop bogus check for prelink binary
+
+ -- Simon Deziel <simon@sdeziel.info>  Thu Jan 24 18:40:18 2019 -0500
+
 check-deleted-libs (0.5) trusty; urgency=medium
 
   * New version
