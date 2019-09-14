@@ -1,0 +1,54 @@
+#!/bin/sh
+
+set -eu
+
+# create a throwaway copy of sleep's binary somewhere
+# exec sleep's copy in the background
+# delete sleep's copy
+# run check-deleted-libs
+# verify the output contains the deleted sleep's copy
+
+# assume failure
+rc=1
+
+d="$1"
+if [ ! -d "$d" ]; then
+  echo "$d does not exist or is not a directory"
+  exit "$rc"
+fi
+
+# create a throwaway copy of sleep's bin
+new_sleep="$(mktemp --tmpdir="$d")"
+cp -a "$(which sleep)" "$new_sleep"
+
+# exec new sleep bin in the background
+"$new_sleep" 10 &
+new_sleep_pid="$!"
+
+# those commands introduce enough delay to give
+# a chance to sleep's copy time to start running
+# It replaces a 'sleep 0.001'
+deleted_bin="$(basename "$new_sleep")"
+output="$(mktemp)"
+
+# delete new sleep bin
+rm "$new_sleep"
+
+# run check-deleted-libs
+./check-deleted-libs > "$output"
+
+# search for sleep's copy in check-deleted-libs' output
+if grep -qFx "$deleted_bin" "$output"; then
+  echo "PASS: FOUND binary in $d"
+  rc=0
+else
+  echo "FAIL: NOT FOUND in $d"
+  echo "check-deleted-libs output:"
+  cat "$output"
+fi
+
+# cleanup
+rm "$output" || true
+kill "$new_sleep_pid" || true
+
+exit "$rc"
