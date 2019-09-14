@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+if [ "$(id -u)" != 0 ]; then
+  echo "FAIL: root/sudo privileges required"
+  exit 1
+fi
+
+for d in /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin; do
+  echo "tests/deleted-bin $d"
+  ./tests/deleted-bin "$d"
+done
