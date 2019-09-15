@@ -1,0 +1,5 @@
+language: minimal
+
+script:
+  - echo "==> Tests"
+  - sudo ./tests/run
