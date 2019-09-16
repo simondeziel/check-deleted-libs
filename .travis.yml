@@ -13,5 +13,4 @@ script:
 
 deploy:
   provider: launchpad
-
   edge: true
