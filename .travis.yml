@@ -10,3 +10,8 @@ language: minimal
 script:
   - echo "==> Tests"
   - sudo ./tests/run
+
+deploy:
+  provider: launchpad
+
+  edge: true
