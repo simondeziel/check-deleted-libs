@@ -1,4 +1,4 @@
-check-deleted-libs (0.6) UNRELEASED; urgency=medium
+check-deleted-libs (0.6) xenial; urgency=medium
 
   * Drop bogus check for prelink binary
 
