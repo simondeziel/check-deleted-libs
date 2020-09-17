@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -u
+
+# run shellcheck
+
+shellcheck ./check-deleted-libs
+rc="$?"
+
+if [ "$rc" -eq 0 ]; then
+  echo "PASS: shellcheck clean"
+else
+  echo "FAIL: shellcheck found issue(s)"
+fi
+
+exit "$rc"

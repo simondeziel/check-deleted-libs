@@ -7,6 +7,9 @@ if [ "$(id -u)" != 0 ]; then
   exit 1
 fi
 
+echo "tests/shellcheck"
+./tests/shellcheck
+
 for d in /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin; do
   echo "tests/deleted-bin $d"
   ./tests/deleted-bin "$d"
