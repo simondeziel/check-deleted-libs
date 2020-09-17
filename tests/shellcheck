@@ -7,7 +7,7 @@ set -u
 shellcheck ./check-deleted-libs
 rc="$?"
 
-if [ "$rc" -ne 0 ]; then
+if [ "$rc" -eq 0 ]; then
   echo "PASS: shellcheck clean"
 else
   echo "FAIL: shellcheck found issue(s)"
