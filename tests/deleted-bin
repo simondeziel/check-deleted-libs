@@ -21,6 +21,9 @@ fi
 new_sleep="$(mktemp --tmpdir="$d")"
 cp -a "$(which sleep)" "$new_sleep"
 
+# make sure the binary is on disk before executing it
+sync
+
 # exec new sleep bin in the background
 "$new_sleep" 10 &
 new_sleep_pid="$!"
