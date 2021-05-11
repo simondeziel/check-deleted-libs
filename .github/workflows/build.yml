@@ -23,3 +23,6 @@ jobs:
       # shellcheck
       - name: Run shellcheck
         uses: ludeeus/action-shellcheck@master
+
+      - name: Run tests
+        run: sudo ./tests/run
