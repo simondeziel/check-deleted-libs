@@ -7,6 +7,6 @@ can be useful to identify which services/binaries should be
 restarted after deploying a security patch for example.
 
 ## Status
-Type            | Service               | Status
----             | ---                   | ---
-CI (Linux)      | Travis                | [![Build Status](https://travis-ci.com/simondeziel/check-deleted-libs.svg?branch=master)](https://travis-ci.com/simondeziel/check-deleted-libs)
+Type       | Service | Status
+---        | ---     | ---
+CI (Linux) | GitHub  | ![Build Status](https://github.com/simondeziel/check-deleted-libs/actions/workflows/build.yml/badge.svg)
