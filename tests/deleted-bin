@@ -19,7 +19,7 @@ fi
 
 # create a throwaway copy of sleep's bin
 new_sleep="$(mktemp --tmpdir="$d")"
-cp -a "$(which sleep)" "$new_sleep"
+cp -a "$(command -v sleep)" "$new_sleep"
 
 # make sure the binary is on disk before executing it
 sync
