@@ -65,5 +65,5 @@ if [ "$QEMU_NAMES" -eq 1 ]; then
   done
 else
   # shellcheck disable=SC2046
-  true | sort -u $(grep -m1 -l "$GREP_RE" [0-9]*/maps 2>/dev/null | sed 's/maps$/comm/')
+  true | sort -u $(grep -m1 -l "$GREP_RE" [0-9]*/maps 2>/dev/null | sed 's/maps$/comm/') 2>/dev/null
 fi
