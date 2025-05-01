@@ -9,4 +9,4 @@ restarted after deploying a security patch for example.
 ## Status
 Type       | Service | Status
 ---        | ---     | ---
-CI (Linux) | GitHub  | ![Build Status](https://github.com/simondeziel/check-deleted-libs/actions/workflows/build.yml/badge.svg)
+CI (Linux) | GitHub  | ![Build Status](https://github.com/simondeziel/check-deleted-libs/actions/workflows/tests.yml/badge.svg)
