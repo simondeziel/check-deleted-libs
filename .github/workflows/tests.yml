@@ -33,6 +33,7 @@ jobs:
       - name: Run ShellCheck
         run: |
           set -eux
+          shellcheck --version
           shellcheck check-deleted-libs
           shellcheck tests/*
 
