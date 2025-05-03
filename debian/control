@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Simon Deziel <simon@sdeziel.info>
 Build-Depends: debhelper-compat (= 12)
 Rules-Requires-Root: no
-Standards-Version: 4.6.1
+Standards-Version: 4.7.2
 Homepage: https://github.com/simondeziel/check-deleted-libs
 Vcs-Git: https://github.com/simondeziel/check-deleted-libs.git
 
