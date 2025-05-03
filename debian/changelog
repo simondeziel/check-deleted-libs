@@ -1,3 +1,12 @@
+check-deleted-libs (0.7) jammy; urgency=medium
+
+  * New version
+    - d/control: switch to debhelper-compat 12
+    - d/compat: remove now unneeded file
+    - d/control: bump standards version to 4.7.2 (no change needed)
+
+ -- Simon Deziel <simon@sdeziel.info>  Sat, 03 May 2025 15:26:12 -0400
+
 check-deleted-libs (0.6) bionic; urgency=medium
 
   * Drop bogus check for prelink binary
