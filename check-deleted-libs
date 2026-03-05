@@ -52,7 +52,10 @@ fi
 
 # Check if /proc/*/maps are readable by testing with PID=1
 cd "/proc" || p_error "Cannot cd to /proc, aborting"
-cat "1/maps" >/dev/null 2>&1 || p_error "Unable to read /proc/1/maps, are you running $SCRIPT_NAME with root privileges?"
+# Null-redirection to test permissions in the current shell process
+if ! { : < "1/maps"; } 2>/dev/null; then
+  p_error "Unable to read /proc/1/maps. Are you running with root privileges?"
+fi
 [ -e "1/comm" ] || p_error "Please upgrade to 2.6.33+ to have /proc/[pid]/comm available. RHEL backported this to recent 2.6.32"
 
 GREP_RE='/\(lib\|s\?bin/\)[^/]\+ (deleted)$'
