@@ -1,3 +1,10 @@
+check-deleted-libs (0.8) jammy; urgency=medium
+
+  * New version
+    - Microoptimisations
+
+ -- Simon Deziel <simon@sdeziel.info>  Thu, 05 Mar 2026 16:07:38 -0500
+
 check-deleted-libs (0.7) jammy; urgency=medium
 
   * New version
