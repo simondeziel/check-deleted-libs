@@ -61,10 +61,17 @@ fi
 GREP_RE='/\(lib\|s\?bin/\)[^/]\+ (deleted)$'
 
 # report names of VM running outdated QEMU
-if [ "$QEMU_NAMES" -eq 1 ]; then
-  pgrep -a ^qemu-system-.+ | sed 's/^\([0-9]\+\).\+ -name \(guest=\)\?\([^ ,]\+\).*/\1 \3/' | while read -r pid vmname; do
-    # shellcheck disable=SC2015
-    grep -q -m1 "$GREP_RE" "$pid/maps" 2>/dev/null && echo "$vmname" || true
+if [ "${QEMU_NAMES}" -eq 1 ]; then
+  pgrep -a "^qemu-system-" | while read -r pid rest; do
+    grep -q "${GREP_RE}" "${pid}/maps" 2>/dev/null || continue
+    case "${rest}" in
+      *"-name "*)
+        vmname="${rest#*-name }"  # Strip everything before and including "-name "
+        vmname="${vmname%% *}"    # Strip everything after the first space
+        vmname="${vmname#guest=}" # Strip "guest=" if it exists
+        echo "${vmname%%,*}"      # Strip commas and everything after them (e.g., debug-threads=on)
+        ;;
+    esac
   done
 else
   # shellcheck disable=SC2046
